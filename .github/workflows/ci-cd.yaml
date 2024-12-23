@@ -27,6 +27,7 @@ jobs:
 
     - name: Set up KUBECONFIG
       run: |
+        echo "${{ secrets.KUBECONFIG }}" | head -n 5
         echo "${{ secrets.KUBECONFIG }}" > kubeconfig.yaml
         export KUBECONFIG=kubeconfig.yaml
 
