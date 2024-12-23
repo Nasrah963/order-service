@@ -27,11 +27,15 @@ jobs:
 
     - name: Set up KUBECONFIG
       run: |
-        echo "${{ secrets.KUBECONFIG }}" | head -n 5
         echo "${{ secrets.KUBECONFIG }}" > kubeconfig.yaml
         export KUBECONFIG=kubeconfig.yaml
 
+    - name: Print KUBECONFIG
+      run: |
+        echo "Full kubeconfig.yaml content:"
+        cat kubeconfig.yaml
+
     - name: Apply Kubernetes manifests
       run: |
-        kubectl apply -f deployment.yaml --validate=false
+        kubectl apply -f deployment.yaml 
         kubectl apply -f service.yaml
