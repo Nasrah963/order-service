@@ -25,9 +25,16 @@ jobs:
         docker build -t lab9microservices.azurecr.io/order-service:latest .
         docker push lab9microservices.azurecr.io/order-service:latest
 
-    - name: Apply Kubernetes manifests
-      env:
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+    - name: Decode KUBE_CONFIG and Set Up KUBECONFIG
+      run: |
+        echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > kubeconfig.yaml
+        export KUBECONFIG=./kubeconfig.yaml
+
+    - name: Verify Kubernetes Nodes
+      run: |
+        kubectl get nodes
+
+    - name: Apply Kubernetes Manifests
       run: |
         kubectl apply -f deployment.yaml
         kubectl apply -f service.yaml
